@@ -11,6 +11,13 @@ Future<void> captureImage() async {
   // await picker.pickImage(source: ImageSource.camera);
 }
 
+Future<void> pickImage() async {
+  final ImagePicker picker = ImagePicker();
+  // Pick an image.
+  final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+  // await picker.pickImage(source: ImageSource.camera);
+}
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -23,12 +30,30 @@ class HomeScreen extends StatelessWidget {
         body: const Center(
           child: Text("Hello World"),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            captureImage();
-          },
-          tooltip: "Add from Camera",
-          child: const Icon(Icons.camera),
+        floatingActionButton: Wrap(
+          direction: Axis.vertical,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: FloatingActionButton(
+                onPressed: () {
+                  pickImage();
+                },
+                tooltip: "Add from Camera",
+                child: const Icon(Icons.image),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: FloatingActionButton(
+                onPressed: () {
+                  captureImage();
+                },
+                tooltip: "Add from Camera",
+                child: const Icon(Icons.camera),
+              ),
+            ),
+          ],
         ));
   }
 }
