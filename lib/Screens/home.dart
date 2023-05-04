@@ -1,59 +1,53 @@
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:randomcup/Widgets/cupCard.dart';
 import 'package:randomcup/Widgets/floating_add.dart';
 
-Future<void> captureImage() async {
-  final ImagePicker picker = ImagePicker();
-  // Pick an image.
-  final XFile? image = await picker.pickImage(source: ImageSource.camera);
-  // await picker.pickImage(source: ImageSource.camera);
+import '../controller.dart';
+
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-Future<void> pickImage() async {
-  final ImagePicker picker = ImagePicker();
-  // Pick an image.
-  final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-  // await picker.pickImage(source: ImageSource.camera);
-}
+class _HomeScreenState extends State<HomeScreen> {
+  Controller controller = Controller();
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  // Widget getCupWidgets() {
+  //   return GridView.count(crossAxisCount: 3, children: [
+  //     for (var cup in controller.cups)
+  //       Container(
+  //         margin: const EdgeInsets.all(10),
+  //         child: Image.file(
+  //           File(cup.image!.path),
+  //           fit: BoxFit.cover,
+  //         ),
+  //       )
+  //   ]);
+  // }
 
   @override
   Widget build(BuildContext context) {
+    setState(() {});
     return Scaffold(
         appBar: AppBar(
           title: const Text("Random Cup"),
         ),
-        body: const Center(
-          child: Text("Hello World"),
+        body: ValueListenableBuilder(
+          valueListenable: controller.cups,
+          builder: (context, value, child) {
+            return GridView.count(crossAxisCount: 3, children: [
+              for (var cup in value)
+                CupCard(
+                  imagePath: cup.image!.path,
+                  size: cup.size,
+                )
+            ]);
+          },
         ),
-        floatingActionButton: Wrap(
-          direction: Axis.vertical,
-          children: [
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: FloatingActionButton(
-                onPressed: () {
-                  pickImage();
-                },
-                tooltip: "Add from Camera",
-                child: const Icon(Icons.image),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: FloatingActionButton(
-                onPressed: () {
-                  captureImage();
-                },
-                tooltip: "Add from Camera",
-                child: const Icon(Icons.camera),
-              ),
-            ),
-          ],
-        ));
+        floatingActionButton: FloatingAdd());
   }
 }
