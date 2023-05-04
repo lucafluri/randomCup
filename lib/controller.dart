@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -27,6 +29,20 @@ class Controller {
 
     print(image?.path);
     return image;
+  }
+
+  Cup getRandomIndexofCups() {
+    return cups.value[Random().nextInt(cups.value.length)];
+  }
+
+  Cup getRandomIndexOfCupsWithSize(Sizes size) {
+    final List<Cup> indexes = [];
+    for (int i = 0; i < cups.value.length; i++) {
+      if (cups.value[i].size == size) {
+        indexes.add(cups.value[i]);
+      }
+    }
+    return indexes[Random().nextInt(indexes.length)];
   }
 
   void addCup(XFile image, Sizes size) {
