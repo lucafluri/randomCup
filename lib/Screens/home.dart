@@ -35,6 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Random Cup"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  // controller.clearCups();
+                },
+                icon: const Icon(Icons.collections))
+          ],
         ),
         body: ValueListenableBuilder(
           valueListenable: controller.cups,
