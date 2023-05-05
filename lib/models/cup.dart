@@ -1,6 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 
-enum Sizes { small, medium, large }
+enum Sizes { small, medium, large, all }
 
 class Cup {
   // String pathToImage = "";

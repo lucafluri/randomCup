@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:randomcup/Screens/home.dart';
+import 'package:randomcup/routes.dart';
+import 'package:randomcup/themes/style.dart';
 
 void main() {
-  runApp(const MyApp());
+  // TODO init app
+
+  runApp(const CupApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class CupApp extends StatelessWidget {
+  const CupApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Random Cup',
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
-      ),
-      home: HomeScreen(),
+      theme: appTheme(),
+      routes: routes,
+      initialRoute: '/',
     );
   }
 }

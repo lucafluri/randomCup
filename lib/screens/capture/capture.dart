@@ -3,14 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../controller.dart';
-import '../Classes/cup.dart';
+import '../../models/cup.dart';
+import '../../services/cup_handler.dart';
 
 class CaptureScreen extends StatefulWidget {
-  CaptureScreen({super.key, required this.image});
+  CaptureScreen({super.key});
 
-  final XFile image;
-  Controller controller = Controller();
+  static const routeName = '/add';
+
+  // Controller controller = Controller();
 
   @override
   State<CaptureScreen> createState() => _CaptureScreenState();
@@ -47,35 +48,47 @@ class _CaptureScreenState extends State<CaptureScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return _CaptureScreenView(this);
+  }
+}
+
+class _CaptureScreenView extends StatelessWidget {
+  const _CaptureScreenView(this.state, {Key? key}) : super(key: key);
+  final _CaptureScreenState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final image = ModalRoute.of(context)!.settings.arguments as XFile;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Capture"),
+        title: const Text("Add new cup"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.file(
-              File(widget.image.path),
+              File(image.path),
               fit: BoxFit.cover,
             ),
             Slider(
-              value: _currentSliderValue,
+              value: state._currentSliderValue,
               min: 1,
               max: 3,
               divisions: 2,
-              label: getLabel(),
+              label: state.getLabel(),
               onChanged: (double value) {
-                setState(() {
-                  _currentSliderValue = value;
+                state.setState(() {
+                  state._currentSliderValue = value;
                 });
               },
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(fixedSize: const Size(200, 50)),
               onPressed: () {
-                widget.controller.addCup(widget.image, getSize());
-                Navigator.pop(context, _currentSliderValue.toInt());
+                // Todo
+                addCup(image, state.getSize());
+                Navigator.pop(context, state._currentSliderValue.toInt());
               },
               child: const Text("Add"),
             ),
