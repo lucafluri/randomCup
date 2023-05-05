@@ -129,4 +129,5 @@ void restoreCupsFromFile() async {
   final filePath = await pickFile();
   if (filePath == "") return;
   cups.value = jsonToCups(await readFile(getFile(filePath)));
+  writeData(cupsToJSON());
 }
