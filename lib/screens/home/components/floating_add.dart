@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../models/cup.dart';
 import '../../../services/image_picker_service.dart';
 import '../../capture/capture.dart';
 
@@ -24,7 +25,9 @@ class FloatingAdd extends StatelessWidget {
               final nav = Navigator.of(context);
               XFile? image = await pickImage();
               if (image != null) {
-                nav.pushNamed('/add', arguments: image);
+                Cup cup = Cup();
+                cup.image = await imageToBase64(image);
+                nav.pushNamed('/add', arguments: cup);
               }
             },
             tooltip: "Add from Media",
@@ -39,7 +42,9 @@ class FloatingAdd extends StatelessWidget {
               final nav = Navigator.of(context);
               XFile? image = await captureImage();
               if (image != null) {
-                nav.pushNamed('/add', arguments: image);
+                Cup cup = Cup();
+                cup.image = await imageToBase64(image);
+                nav.pushNamed('/add', arguments: cup);
               }
             },
             tooltip: "Add from Camera",

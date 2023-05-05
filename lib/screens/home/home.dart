@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:randomcup/services/storage_service.dart';
 import '../../services/cup_handler.dart';
 import 'components/cupCard.dart';
 import 'components/floating_add.dart';
@@ -36,21 +37,34 @@ class _HomeScreenView extends StatelessWidget {
     // setState(() {});
     return Scaffold(
         appBar: AppBar(
-          title: Text("All Cups - Total: ${cups.value.length}"),
+          title: Text("All Cups"),
           actions: [
-            // IconButton(
-            //     onPressed: () {
-            //       // controller.clearCups();
-            //     },
-            //     icon: const Icon(Icons.collections))
+            IconButton(
+                onPressed: () {
+                  // controller.clearCups();
+                  shareJSON();
+                },
+                icon: const Icon(Icons.download)),
+            IconButton(
+                onPressed: () {
+                  restoreCupsFromFile();
+                },
+                icon: const Icon(Icons.upload)),
           ],
         ),
         body: ValueListenableBuilder(
           valueListenable: cups,
           builder: (context, value, child) {
-            return GridView.count(
-                crossAxisCount: 3,
-                children: [for (var cup in value) CupCard(cup: cup)]);
+            return GridView.count(crossAxisCount: 3, children: [
+              for (var cup in value)
+                GestureDetector(
+                  child: CupCard(cup: cup),
+                  onLongPress: () {
+                    // TODO open confirm to delete
+                    removeCup(cup);
+                  },
+                )
+            ]);
           },
         ),
         floatingActionButton: FloatingAdd());

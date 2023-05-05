@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:randomcup/screens/home/components/cupCard.dart';
 import 'package:randomcup/screens/home/home.dart';
+import 'package:randomcup/services/storage_service.dart';
 
 import '../../models/cup.dart';
 import '../../services/cup_handler.dart';
@@ -85,10 +86,11 @@ class _SelectionScreenView extends StatelessWidget {
                 divisions: 3,
                 label: state.getLabel(),
                 onChanged: (double value) {
-                  if (cups.value.isNotEmpty)
+                  if (cups.value.isNotEmpty) {
                     state.setState(() {
-                      state.._currentSliderValue = value;
+                      state._currentSliderValue = value;
                     });
+                  }
                 })
           ],
         ),
@@ -101,8 +103,9 @@ class _SelectionScreenView extends StatelessWidget {
               } else {
                 state.randomCup = getRandomCup();
               }
-              // print(state.randomCup?.image!.path);
-              // print(state.randomCup?.size);
+
+              // TESTING
+              printFiles("");
             });
           },
           child: const Icon(Icons.refresh),

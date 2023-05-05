@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -19,10 +20,10 @@ class CupCard extends StatelessWidget {
         children: [
           Expanded(
             child: cup.image != null
-                ? Image.file(
+                ? Image.memory(
+                    base64Decode(cup.image!),
                     width: 400,
                     height: 400,
-                    File(cup.image!.path),
                     fit: BoxFit.cover,
                   )
                 : const Icon(Icons.image_not_supported),

@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,6 +21,7 @@ class CaptureScreen extends StatefulWidget {
 
 class _CaptureScreenState extends State<CaptureScreen> {
   double _currentSliderValue = 2;
+  Uint8List? image;
 
   String getLabel() {
     switch (_currentSliderValue.toInt()) {
@@ -58,7 +61,11 @@ class _CaptureScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final image = ModalRoute.of(context)!.settings.arguments as XFile;
+    final cup = ModalRoute.of(context)!.settings.arguments as Cup;
+    if (state.image == null) {
+      state.image = base64Decode(cup.image!);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add new cup"),
@@ -67,10 +74,11 @@ class _CaptureScreenView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.file(
-              File(image.path),
+            Image.memory(
+              state.image!,
               fit: BoxFit.cover,
             ),
+            // Image.memory(),
             Slider(
               value: state._currentSliderValue,
               min: 1,
@@ -86,8 +94,8 @@ class _CaptureScreenView extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(fixedSize: const Size(200, 50)),
               onPressed: () {
-                // Todo
-                addCup(image, state.getSize());
+                cup.size = state.getSize();
+                addCup(cup);
                 Navigator.pop(context, state._currentSliderValue.toInt());
               },
               child: const Text("Add"),

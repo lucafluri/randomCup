@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:randomcup/routes.dart';
+import 'package:randomcup/services/cup_handler.dart';
+import 'package:randomcup/services/storage_service.dart';
 import 'package:randomcup/themes/style.dart';
 
-void main() {
-  // TODO init app
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  initStorageService();
+  if (await fileExists(cupsFileName)) restoreCups();
 
   runApp(const CupApp());
 }
