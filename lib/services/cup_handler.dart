@@ -24,6 +24,29 @@ Cup getRandomCupWithSize(Sizes size) {
   return indexes[Random().nextInt(indexes.length)];
 }
 
+Cup getRandomCupWithSizes(List<Sizes> sizes) {
+  final List<Cup> indexes = [];
+  for (int i = 0; i < cups.value.length; i++) {
+    if (sizes.contains(cups.value[i].size)) {
+      indexes.add(cups.value[i]);
+    }
+  }
+  return indexes[Random().nextInt(indexes.length)];
+}
+
+Sizes getSizeFromInt(int i) {
+  switch (i) {
+    case 0:
+      return Sizes.small;
+    case 1:
+      return Sizes.medium;
+    case 2:
+      return Sizes.large;
+    default:
+      return Sizes.medium;
+  }
+}
+
 // void addCup(String image, Sizes size) {
 //   final Cup cup = Cup();
 //   // cup.image = image;

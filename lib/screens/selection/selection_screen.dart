@@ -21,35 +21,28 @@ class _SelectionScreenState extends State<SelectionScreen> {
   double _currentSliderValue = 2;
   Cup? randomCup;
 
-  String getLabel() {
-    switch (_currentSliderValue.toInt()) {
-      case 1:
-        return "small";
-      case 2:
-        return "medium";
-      case 3:
-        return "large";
-      case 4:
-        return "all";
-      default:
-        return "all";
-    }
-  }
+  final List<Widget> toggleButtons = [
+    Icon(Icons.coffee, size: 20),
+    Icon(Icons.coffee, size: 30),
+    Icon(Icons.coffee, size: 40),
+  ];
 
-  Sizes getSize() {
-    switch (_currentSliderValue.toInt()) {
-      case 1:
-        return Sizes.small;
-      case 2:
-        return Sizes.medium;
-      case 3:
-        return Sizes.large;
-      case 4:
-        return Sizes.all;
-      default:
-        return Sizes.all;
-    }
-  }
+  final List<bool> isSelected = [true, true, true];
+
+  // String getLabel() {
+  //   switch (_currentSliderValue.toInt()) {
+  //     case 1:
+  //       return "small";
+  //     case 2:
+  //       return "medium";
+  //     case 3:
+  //       return "large";
+  //     case 4:
+  //       return "all";
+  //     default:
+  //       return "all";
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) => _SelectionScreenView(this);
@@ -79,19 +72,38 @@ class _SelectionScreenView extends StatelessWidget {
             state.randomCup != null
                 ? CupCard(cup: state.randomCup!)
                 : const Placeholder(),
-            Slider(
-                value: state._currentSliderValue,
-                min: 1,
-                max: 4,
-                divisions: 3,
-                label: state.getLabel(),
-                onChanged: (double value) {
-                  if (cups.value.isNotEmpty) {
-                    state.setState(() {
-                      state._currentSliderValue = value;
-                    });
+            // Slider(
+            //     value: state._currentSliderValue,
+            //     min: 1,
+            //     max: 4,
+            //     divisions: 3,
+            //     // label: state.getLabel(),
+            //     onChanged: (double value) {
+            //       if (cups.value.isNotEmpty) {
+            //         state.setState(() {
+            //           state._currentSliderValue = value;
+            //         });
+            //       }
+            //     }),
+            ToggleButtons(
+              direction: Axis.horizontal,
+              isSelected: state.isSelected,
+              constraints: const BoxConstraints(
+                minHeight: 40.0,
+                minWidth: 80.0,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              onPressed: (int idx) {
+                state.setState(() {
+                  // Check that at least one button is selected
+                  state.isSelected[idx] = !state.isSelected[idx];
+                  if (state.isSelected.where((element) => element).isEmpty) {
+                    state.isSelected[idx] = true;
                   }
-                })
+                });
+              },
+              children: state.toggleButtons,
+            )
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -99,7 +111,15 @@ class _SelectionScreenView extends StatelessWidget {
             state.setState(() {
               // print(cups.value.length);
               if (state._currentSliderValue < 4) {
-                state.randomCup = getRandomCupWithSize(state.getSize());
+                // state.randomCup = getRandomCupWithSize(
+                //     getSizeFromInt(state._currentSliderValue.toInt() - 1));
+
+                final listOfTrueSizes = [
+                  for (int i = 0; i < state.isSelected.length; i++)
+                    if (state.isSelected[i]) getSizeFromInt(i)
+                ];
+
+                state.randomCup = getRandomCupWithSizes(listOfTrueSizes);
               } else {
                 state.randomCup = getRandomCup();
               }

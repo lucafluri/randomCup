@@ -23,31 +23,13 @@ class _CaptureScreenState extends State<CaptureScreen> {
   double _currentSliderValue = 2;
   Uint8List? image;
 
-  String getLabel() {
-    switch (_currentSliderValue.toInt()) {
-      case 1:
-        return "small";
-      case 2:
-        return "medium";
-      case 3:
-        return "large";
-      default:
-        return "medium";
-    }
-  }
+  final List<Widget> toggleButtons = [
+    Icon(Icons.coffee, size: 20),
+    Icon(Icons.coffee, size: 30),
+    Icon(Icons.coffee, size: 40),
+  ];
 
-  Sizes getSize() {
-    switch (_currentSliderValue.toInt()) {
-      case 1:
-        return Sizes.small;
-      case 2:
-        return Sizes.medium;
-      case 3:
-        return Sizes.large;
-      default:
-        return Sizes.medium;
-    }
-  }
+  final List<bool> isSelected = [false, true, false];
 
   @override
   Widget build(BuildContext context) {
@@ -79,22 +61,46 @@ class _CaptureScreenView extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             // Image.memory(),
-            Slider(
-              value: state._currentSliderValue,
-              min: 1,
-              max: 3,
-              divisions: 2,
-              label: state.getLabel(),
-              onChanged: (double value) {
+            // Slider(
+            //   value: state._currentSliderValue,
+            //   min: 1,
+            //   max: 3,
+            //   divisions: 2,
+            //   // label: state.getLabel(),
+            //   onChanged: (double value) {
+            //     state.setState(() {
+            //       state._currentSliderValue = value;
+            //     });
+            //   },
+            // ),
+            ToggleButtons(
+              direction: Axis.horizontal,
+              isSelected: state.isSelected,
+              constraints: const BoxConstraints(
+                minHeight: 40.0,
+                minWidth: 80.0,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              onPressed: (int idx) {
                 state.setState(() {
-                  state._currentSliderValue = value;
+                  for (int buttonIndex = 0;
+                      buttonIndex < state.isSelected.length;
+                      buttonIndex++) {
+                    if (buttonIndex == idx) {
+                      state.isSelected[buttonIndex] = true;
+                    } else {
+                      state.isSelected[buttonIndex] = false;
+                    }
+                  }
                 });
               },
+              children: state.toggleButtons,
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(fixedSize: const Size(200, 50)),
               onPressed: () {
-                cup.size = state.getSize();
+                final indexTrue = state.isSelected.indexOf(true);
+                cup.size = getSizeFromInt(indexTrue);
                 addCup(cup);
                 Navigator.pop(context, state._currentSliderValue.toInt());
               },
