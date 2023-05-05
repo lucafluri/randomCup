@@ -37,7 +37,7 @@ class _HomeScreenView extends StatelessWidget {
     // setState(() {});
     return Scaffold(
         appBar: AppBar(
-          title: Text("All Cups"),
+          title: Text("All Mugs"),
           actions: [
             IconButton(
                 onPressed: () {
@@ -58,7 +58,10 @@ class _HomeScreenView extends StatelessWidget {
             return GridView.count(crossAxisCount: 3, children: [
               for (var cup in value)
                 GestureDetector(
-                  child: CupCard(cup: cup),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CupCard(cup: cup),
+                  ),
                   onLongPress: () {
                     // TODO open confirm to delete
                     removeCup(cup);

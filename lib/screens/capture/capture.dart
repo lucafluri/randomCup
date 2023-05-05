@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../components/size_togglebutton.dart';
 import '../../models/cup.dart';
 import '../../services/cup_handler.dart';
 
@@ -23,11 +24,11 @@ class _CaptureScreenState extends State<CaptureScreen> {
   double _currentSliderValue = 2;
   Uint8List? image;
 
-  final List<Widget> toggleButtons = [
-    Icon(Icons.coffee, size: 20),
-    Icon(Icons.coffee, size: 30),
-    Icon(Icons.coffee, size: 40),
-  ];
+  // final List<Widget> toggleButtons = [
+  //   Icon(Icons.coffee, size: 20),
+  //   Icon(Icons.coffee, size: 30),
+  //   Icon(Icons.coffee, size: 40),
+  // ];
 
   final List<bool> isSelected = [false, true, false];
 
@@ -50,7 +51,7 @@ class _CaptureScreenView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add new cup"),
+        title: const Text("Add new Mug"),
       ),
       body: Center(
         child: Column(
@@ -73,38 +74,45 @@ class _CaptureScreenView extends StatelessWidget {
             //     });
             //   },
             // ),
-            ToggleButtons(
-              direction: Axis.horizontal,
-              isSelected: state.isSelected,
-              constraints: const BoxConstraints(
-                minHeight: 40.0,
-                minWidth: 80.0,
-              ),
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              onPressed: (int idx) {
-                state.setState(() {
-                  for (int buttonIndex = 0;
-                      buttonIndex < state.isSelected.length;
-                      buttonIndex++) {
-                    if (buttonIndex == idx) {
-                      state.isSelected[buttonIndex] = true;
-                    } else {
-                      state.isSelected[buttonIndex] = false;
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: ToggleButtons(
+                direction: Axis.horizontal,
+                isSelected: state.isSelected,
+                constraints: const BoxConstraints(
+                  minHeight: 60.0,
+                  minWidth: 100.0,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                onPressed: (int idx) {
+                  state.setState(() {
+                    for (int buttonIndex = 0;
+                        buttonIndex < state.isSelected.length;
+                        buttonIndex++) {
+                      if (buttonIndex == idx) {
+                        state.isSelected[buttonIndex] = true;
+                      } else {
+                        state.isSelected[buttonIndex] = false;
+                      }
                     }
-                  }
-                });
-              },
-              children: state.toggleButtons,
+                  });
+                },
+                children: toggleButtons,
+              ),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(fixedSize: const Size(200, 50)),
-              onPressed: () {
-                final indexTrue = state.isSelected.indexOf(true);
-                cup.size = getSizeFromInt(indexTrue);
-                addCup(cup);
-                Navigator.pop(context, state._currentSliderValue.toInt());
-              },
-              child: const Text("Add"),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 24.0, right: 24.0, bottom: 24.0, top: 24.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(fixedSize: const Size(200, 50)),
+                onPressed: () {
+                  final indexTrue = state.isSelected.indexOf(true);
+                  cup.size = getSizeFromInt(indexTrue);
+                  addCup(cup);
+                  Navigator.pop(context, state._currentSliderValue.toInt());
+                },
+                child: const Text("Add"),
+              ),
             ),
           ],
         ),

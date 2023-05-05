@@ -28,9 +28,12 @@ class CupCard extends StatelessWidget {
                   )
                 : const Icon(Icons.image_not_supported),
           ),
-          Text(
-            cup.size.toString().split('.').last,
-            style: const TextStyle(fontSize: 20),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              cup.size.toString().split('.').last,
+              style: const TextStyle(fontSize: 20),
+            ),
           )
         ],
       ),

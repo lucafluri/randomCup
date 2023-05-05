@@ -19,7 +19,7 @@ class CupApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Random Cup',
+      title: 'Random Mug',
       theme: appTheme(),
       routes: routes,
       initialRoute: '/',

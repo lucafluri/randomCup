@@ -5,6 +5,7 @@ import 'package:randomcup/screens/home/components/cupCard.dart';
 import 'package:randomcup/screens/home/home.dart';
 import 'package:randomcup/services/storage_service.dart';
 
+import '../../components/size_togglebutton.dart';
 import '../../models/cup.dart';
 import '../../services/cup_handler.dart';
 
@@ -20,12 +21,6 @@ class SelectionScreen extends StatefulWidget {
 class _SelectionScreenState extends State<SelectionScreen> {
   double _currentSliderValue = 2;
   Cup? randomCup;
-
-  final List<Widget> toggleButtons = [
-    Icon(Icons.coffee, size: 20),
-    Icon(Icons.coffee, size: 30),
-    Icon(Icons.coffee, size: 40),
-  ];
 
   final List<bool> isSelected = [true, true, true];
 
@@ -56,7 +51,7 @@ class _SelectionScreenView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Random Cup"),
+          title: const Text("Random Mug"),
           actions: [
             IconButton(
                 onPressed: () {
@@ -71,38 +66,34 @@ class _SelectionScreenView extends StatelessWidget {
           children: [
             state.randomCup != null
                 ? CupCard(cup: state.randomCup!)
-                : const Placeholder(),
-            // Slider(
-            //     value: state._currentSliderValue,
-            //     min: 1,
-            //     max: 4,
-            //     divisions: 3,
-            //     // label: state.getLabel(),
-            //     onChanged: (double value) {
-            //       if (cups.value.isNotEmpty) {
-            //         state.setState(() {
-            //           state._currentSliderValue = value;
-            //         });
-            //       }
-            //     }),
-            ToggleButtons(
-              direction: Axis.horizontal,
-              isSelected: state.isSelected,
-              constraints: const BoxConstraints(
-                minHeight: 40.0,
-                minWidth: 80.0,
+                : const SizedBox(
+                    height: 500,
+                    width: 400,
+                    child: Center(
+                      child: Text("Select a cup size and press refresh"),
+                    ),
+                  ),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: ToggleButtons(
+                direction: Axis.horizontal,
+                isSelected: state.isSelected,
+                constraints: const BoxConstraints(
+                  minHeight: 60.0,
+                  minWidth: 100.0,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                onPressed: (int idx) {
+                  state.setState(() {
+                    // Check that at least one button is selected
+                    state.isSelected[idx] = !state.isSelected[idx];
+                    if (state.isSelected.where((element) => element).isEmpty) {
+                      state.isSelected[idx] = true;
+                    }
+                  });
+                },
+                children: toggleButtons,
               ),
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              onPressed: (int idx) {
-                state.setState(() {
-                  // Check that at least one button is selected
-                  state.isSelected[idx] = !state.isSelected[idx];
-                  if (state.isSelected.where((element) => element).isEmpty) {
-                    state.isSelected[idx] = true;
-                  }
-                });
-              },
-              children: state.toggleButtons,
             )
           ],
         ),
