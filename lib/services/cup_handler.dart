@@ -21,6 +21,7 @@ Cup getRandomCupWithSize(Sizes size) {
       indexes.add(cups.value[i]);
     }
   }
+  if (indexes.isEmpty) return Cup();
   return indexes[Random().nextInt(indexes.length)];
 }
 
@@ -31,6 +32,7 @@ Cup getRandomCupWithSizes(List<Sizes> sizes) {
       indexes.add(cups.value[i]);
     }
   }
+  if (indexes.isEmpty) return Cup();
   return indexes[Random().nextInt(indexes.length)];
 }
 

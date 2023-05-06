@@ -101,9 +101,34 @@ Future<XFile> getLocalJSON() async {
   return XFile(file.path);
 }
 
+Future<String?> getDownloadPath() async {
+  Directory? directory;
+  try {
+    if (Platform.isIOS) {
+      directory = await getApplicationDocumentsDirectory();
+    } else {
+      directory = Directory('/storage/emulated/0/Download');
+      // Put file in global download folder, if for an unknown reason it didn't exist, we fallback
+      // ignore: avoid_slow_async_io
+      if (!await directory.exists())
+        directory = await getExternalStorageDirectory();
+    }
+  } catch (err, stack) {
+    print("Cannot get download folder path");
+  }
+  return directory?.path;
+}
+
+void saveJSONInDownloads(XFile file) async {
+  final downloadPath = await getDownloadPath();
+  return file.saveTo('$downloadPath/cups.json');
+}
+
 // Share json file
 void shareJSON() async {
-  await Share.shareXFiles([await getLocalJSON()]);
+  XFile file = await getLocalJSON();
+  saveJSONInDownloads(file);
+  await Share.shareXFiles([file]);
 }
 
 // Pick file from Storage

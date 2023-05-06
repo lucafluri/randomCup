@@ -24,21 +24,6 @@ class _SelectionScreenState extends State<SelectionScreen> {
 
   final List<bool> isSelected = [true, true, true];
 
-  // String getLabel() {
-  //   switch (_currentSliderValue.toInt()) {
-  //     case 1:
-  //       return "small";
-  //     case 2:
-  //       return "medium";
-  //     case 3:
-  //       return "large";
-  //     case 4:
-  //       return "all";
-  //     default:
-  //       return "all";
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) => _SelectionScreenView(this);
 }
@@ -70,7 +55,7 @@ class _SelectionScreenView extends StatelessWidget {
                     height: 500,
                     width: 400,
                     child: Center(
-                      child: Text("Select a cup size and press refresh"),
+                      child: Text("Select a mug size and press refresh"),
                     ),
                   ),
             Padding(
