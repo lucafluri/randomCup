@@ -57,9 +57,12 @@ class _CaptureScreenView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.memory(
-              state.image!,
-              fit: BoxFit.cover,
+            Expanded(
+              child: Image.memory(
+                height: 400,
+                state.image!,
+                fit: BoxFit.cover,
+              ),
             ),
             // Image.memory(),
             // Slider(
