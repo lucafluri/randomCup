@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -121,7 +123,7 @@ Future<String?> getDownloadPath() async {
 
 void saveJSONInDownloads(XFile file) async {
   final downloadPath = await getDownloadPath();
-  return file.saveTo('$downloadPath/cups.json');
+  file.saveTo('$downloadPath/cups.json');
 }
 
 // Share json file
@@ -129,6 +131,14 @@ void shareJSON() async {
   XFile file = await getLocalJSON();
   saveJSONInDownloads(file);
   await Share.shareXFiles([file]);
+  Fluttertoast.showToast(
+      msg: "Backup saved to Downloads folder as well",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      // backgroundColor: Colors.red,
+      // textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 // Pick file from Storage
